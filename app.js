@@ -6,8 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var partidos = require('../../IdeaProjects/BuscaPadel_BackEnd/routes/partidos');
-var jugadores = require('../../IdeaProjects/BuscaPadel_BackEnd/routes/jugadores');
+var partidos = require('./routes/partidos');
+var jugadores = require('./routes/jugadores');
 
 var app = express();
 
