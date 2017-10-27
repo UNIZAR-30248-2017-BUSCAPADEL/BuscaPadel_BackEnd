@@ -1,5 +1,22 @@
 //llamamos al paquete mysql que hemos instalado
-var mysql = require('mysql'),
+var mysql = require('mysql');
+var port = normalizePort(process.env.PORT || '3000');
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+if(port === '3000'){
     //creamos la conexion a nuestra base de datos con los datos de acceso de cada uno
     connection = mysql.createConnection(
         {
@@ -9,6 +26,16 @@ var mysql = require('mysql'),
             database: 'buscapadel'
         }
     );
+}else{
+    connection = mysql.createConnection(
+        {
+            host: 'db4free.net',
+            user: 'buscapadel',
+            password: 'buscapadel1234',
+            database: 'buscapadel'
+        }
+    );
+}
 
 //creamos un objeto para ir almacenando todo lo que necesitemos
 var userModel = {};
