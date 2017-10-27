@@ -16,7 +16,7 @@ function normalizePort(val) {
 
     return false;
 }
-if(port === '3000'){
+if(port === 3000){
     //creamos la conexion a nuestra base de datos con los datos de acceso de cada uno
     connection = mysql.createConnection(
         {
