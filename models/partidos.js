@@ -30,7 +30,7 @@ function normalizePort(val) {
             {
                 host: 'us-cdbr-iron-east-05.cleardb.net',
                 user: 'bd017a21c402e9',
-                password: 'bc0319ef',
+                password: 'dba55194821a283',
                 database: 'heroku_815057acb052552'
             }
         );
