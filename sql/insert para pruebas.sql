@@ -10,7 +10,7 @@ INSERT INTO jugadores (id,nombre,apellidos,correo,nivel) VALUES (9,'Cailin','Bur
 INSERT INTO jugadores (id,nombre,apellidos,correo,nivel) VALUES (10,'Bradley','Mccarty','Duis.cursus@nonummyipsum.co.uk',5);
 
 INSERT INTO partidos (id,fkIdJugador1,fkIdJugador2,fkIdJugador3,fkIdJugador4,lugar,fecha,hora,nivel) VALUES
- (2,8,9,1,3,"701 Pede. St.","08:08:08",'2017-01-01',7),
+ (2,8,9,1,3,"701 Pede. St.",'08:08:08','2017-01-01',7),
  (3,6,5,6,8,"6106 Tincidunt Street",'08:08:08','2017-01-01',6),
  (4,4,6,10,6,"P.O. Box 889, 4814 Quam. St.",'08:08:08','2017-01-01',8),
  (5,1,2,1,1,"7135 Nibh Ave",'08:08:08','2017-01-01',8),
