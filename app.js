@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var partidos = require('./routes/partidos');
 var jugadores = require('./routes/jugadores');
+var tests = require('./routes/tests');
 
 var app = express();
 
