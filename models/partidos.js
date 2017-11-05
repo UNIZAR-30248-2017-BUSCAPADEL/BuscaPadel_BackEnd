@@ -62,7 +62,7 @@ partidosModel.getPartido = function(id,callback)
 {
     if (connection)
     {
-        var sql = 'SELECT * FROM partidosModel WHERE id = ' + connection.escape(id);
+        var sql = 'SELECT * FROM partidos WHERE id = ' + connection.escape(id);
         connection.query(sql, function(error, row)
         {
             if(error)
@@ -82,7 +82,8 @@ partidosModel.insertPartido = function(partidoData,callback)
 {
     if (connection)
     {
-        connection.query('INSERT INTO partidosModel SET ?', partidoData, function(error, result)
+        console.log(partidoData);
+        connection.query('INSERT INTO partidos SET ?', partidoData, function(error, result)
         {
             if(error)
             {
@@ -103,7 +104,7 @@ partidosModel.updatePartido = function(partidoData, callback)
 //console.log(userData); return;
     if(connection)
     {
-        var sql = 'UPDATE partidosModel SET fkIdJugador1 = ' + connection.escape(partidoData.fkIdJugador1) + ',' +
+        var sql = 'UPDATE partidos SET fkIdJugador1 = ' + connection.escape(partidoData.fkIdJugador1) + ',' +
             'fkIdJugador2 = ' + connection.escape(partidoData.fkIdJugador2)  + ',' + 'fkIdJugador3 = ' + connection.escape(partidoData.fkIdJugador3) + ',' +
             'fkIdJugador4 = ' + connection.escape(partidoData.fkIdJugador4)  + ',' + 'lugar = ' + connection.escape(partidoData.lugar) + ',' +
             'hora = ' + connection.escape(partidoData.hora)  + ',' + 'fecha = ' + connection.escape(partidoData.fecha) + ',' +
@@ -129,13 +130,13 @@ partidosModel.deletePartido= function(id, callback)
 {
     if(connection)
     {
-        var sqlExists = 'SELECT * FROM partidosModel WHERE id = ' + connection.escape(id);
+        var sqlExists = 'SELECT * FROM partidos WHERE id = ' + connection.escape(id);
         connection.query(sqlExists, function(err, row)
         {
 //si existe la id del usuario a eliminar
             if(row)
             {
-                var sql = 'DELETE FROM partidosModel WHERE id = ' + connection.escape(id);
+                var sql = 'DELETE FROM partidos WHERE id = ' + connection.escape(id);
                 connection.query(sql, function(error, result)
                 {
                     if(error)

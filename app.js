@@ -6,9 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var partidos = require('./routes/partidos');
-var jugadores = require('./routes/jugadores');
-var tests = require('./routes/tests');
 
 var app = express();
 
@@ -25,8 +22,31 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/partidos', partidos);
-app.use('/jugadores', jugadores);
+//app.use('/partidos', partidos);
+var PartidosCtrl = require('./controllers/partidos');
+var JugadoresCtrl = require('./controllers/jugadores');
+// API routes
+var api = express.Router();
+
+api.route('/partidos')
+    .get(PartidosCtrl.findAll)
+    .post(PartidosCtrl.add);
+
+api.route('/partidos/:id')
+    .get(PartidosCtrl.findById)
+    .put(PartidosCtrl.update)
+    .delete(PartidosCtrl.delete);
+
+api.route('/jugadores')
+    .get(JugadoresCtrl.findAll)
+    .post(JugadoresCtrl.add);
+
+api.route('/jugadores/:id')
+    .get(JugadoresCtrl.findById)
+    .put(JugadoresCtrl.update)
+    .delete(JugadoresCtrl.delete);
+
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

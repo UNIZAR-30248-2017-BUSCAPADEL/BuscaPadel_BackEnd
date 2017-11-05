@@ -104,8 +104,10 @@ userModel.updateJugador = function(jugadorData, callback)
 //console.log(userData); return;
     if(connection)
     {
-        var sql = 'UPDATE jugadores SET nombre = ' + connection.escape(jugadorData.username) + ',' +
-            'email = ' + connection.escape(jugadorData.email) +
+        var sql = 'UPDATE jugadores SET nombre = ' + connection.escape(jugadorData.nombre) + ',' +
+            'apellidos = ' + connection.escape(jugadorData.apellidos) +',' +
+            'correo = ' + connection.escape(jugadorData.correo) +',' +
+            'nivel = ' + connection.escape(jugadorData.nivel) +
             'WHERE id = ' + jugadorData.id;
 
         connection.query(sql, function(error, result)
