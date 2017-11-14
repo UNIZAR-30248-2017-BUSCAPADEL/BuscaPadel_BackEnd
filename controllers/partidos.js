@@ -21,7 +21,6 @@ exports.findById = function(req, res) {
 //POST - Insert a new register
 exports.add = function(req, res) {
     console.log('POST');
-    console.log(req.body);
     var partido = {
         id: req.body.id,
         fkIdJugador1: req.body.fkIdJugador1,
@@ -42,7 +41,6 @@ exports.add = function(req, res) {
 //PUT - Update a register already exists
 exports.update = function(req, res) {
     PartidoModel.getPartido(req.params.id, function(err, partido) {
-        console.log(req.body);
         var partido = {
             id: req.params.id,
             fkIdJugador1: req.body.fkIdJugador1,
@@ -66,5 +64,19 @@ exports.delete = function(req, res) {
     PartidoModel.deletePartido(req.params.id, function(err, partido) {
         if(err) return res.send(500, err.message);
         res.json({ message: 'Successfully deleted' });
+    });
+};
+
+//ADD PLAYER TO MATCH
+exports.addPlayer = function(req, res) {
+    PartidoModel.getPartido(req.params.id, function(err, partido) {
+        var partido = {
+            id: req.params.id,
+            fkIdJugador1: req.body.fkIdJugador1
+        };
+        PartidoModel.addPlayer(partido, function(err) {
+            if(err) return res.send(500, err.message);
+            res.status(200).jsonp(partido);
+        });
     });
 };

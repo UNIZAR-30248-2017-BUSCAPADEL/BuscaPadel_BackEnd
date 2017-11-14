@@ -60,3 +60,18 @@ exports.delete = function(req, res) {
         res.json({ message: 'Successfully deleted' });
     });
 };
+
+//PUT - SET LEVEL PLAYER
+exports.setLevel = function(req, res) {
+    JugadorModel.getJugador(req.params.id, function(err, partido) {
+        console.log(req.body);
+        var jugador = {
+            id: req.params.id,
+            nivel: req.body.nivel
+        };
+        JugadorModel.addLevel(jugador, function(err) {
+            if(err) return res.send(500, err.message);
+            res.status(200).jsonp(jugador);
+        });
+    });
+};

@@ -157,5 +157,90 @@ partidosModel.deletePartido= function(id, callback)
     }
 }
 
+//añadir jugador a partido
+partidosModel.addPlayer = function(partidoData, callback)
+{
+    if(connection)
+    {
+        var sqlExists = 'SELECT fkIdJugador1 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
+        connection.query(sqlExists, function(err, row)
+        {
+            if(row)
+            {
+                var sqlExists = 'SELECT fkIdJugador2 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
+                connection.query(sqlExists, function(err, row) {
+                    if (row) {
+                        var sqlExists = 'SELECT fkIdJugador3 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
+                        connection.query(sqlExists, function(err, row) {
+                            if (row) {
+                                var sqlExists = 'SELECT fkIdJugador4 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
+                                connection.query(sqlExists, function(err, row) {
+                                    if (row) {
+                                        callback(null,{"msg":"match Complete"});
+                                    }else{
+                                        var sql = 'UPDATE partidos SET fkIdJugador4 = ' + connection.escape(partidoData.fkIdJugador1)  + ' WHERE id = ' + connection.escape(partidoData.id);
+                                        connection.query(sql, function(error, result)
+                                        {
+                                            if(error)
+                                            {
+                                                throw error;
+                                            }
+                                            else
+                                            {
+                                                callback(null,{"msg":"deleted"});
+                                            }
+                                        });
+                                    }
+                                });
+                            }else{
+                                var sql = 'UPDATE partidos SET fkIdJugador3 = ' + connection.escape(partidoData.fkIdJugador1)  + ' WHERE id = ' + connection.escape(partidoData.id);
+                                connection.query(sql, function(error, result)
+                                {
+                                    if(error)
+                                    {
+                                        throw error;
+                                    }
+                                    else
+                                    {
+                                        callback(null,{"msg":"deleted"});
+                                    }
+                                });
+                            }
+                        });
+                    }else{
+                        var sql = 'UPDATE partidos SET fkIdJugador2 = ' + connection.escape(partidoData.fkIdJugador1)  + ' WHERE id = ' + connection.escape(partidoData.id);
+                        connection.query(sql, function(error, result)
+                        {
+                            if(error)
+                            {
+                                throw error;
+                            }
+                            else
+                            {
+                                callback(null,{"msg":"deleted"});
+                            }
+                        });
+                    }
+                });
+
+            }
+            else {
+                var sql = 'UPDATE partidos SET fkIdJugador1 = ' + connection.escape(partidoData.fkIdJugador1)  + ' WHERE id = ' + connection.escape(partidoData.id);
+                connection.query(sql, function(error, result)
+                {
+                    if(error)
+                    {
+                        throw error;
+                    }
+                    else
+                    {
+                        callback(null,{"msg":"deleted"});
+                    }
+                });
+            }
+        });
+    }
+}
+
 //exportamos el objeto para tenerlo disponible en la zona de rutas
 module.exports = partidosModel;

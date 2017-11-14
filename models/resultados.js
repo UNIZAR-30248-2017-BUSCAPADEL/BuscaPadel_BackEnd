@@ -38,14 +38,14 @@ if(port === 3000){
 }
 
 //creamos un objeto para ir almacenando todo lo que necesitemos
-var userModel = {};
+var resultModel = {};
 
 //obtenemos todos los jugadores
-userModel.getJugadores = function(callback)
+resultModel.getResultados = function(callback)
 {
     if (connection)
     {
-        connection.query('SELECT * FROM jugadores ORDER BY id', function(error, rows) {
+        connection.query('SELECT * FROM resultados ORDER BY id', function(error, rows) {
             if(error)
             {
                 throw error;
@@ -59,11 +59,11 @@ userModel.getJugadores = function(callback)
 }
 
 //obtenemos un jugador por su id
-userModel.getJugador = function(id,callback)
+resultModel.getResultado = function(id,callback)
 {
     if (connection)
     {
-        var sql = 'SELECT * FROM jugadores WHERE id = ' + connection.escape(id);
+        var sql = 'SELECT * FROM resultados WHERE id = ' + connection.escape(id);
         connection.query(sql, function(error, row)
         {
             if(error)
@@ -79,11 +79,11 @@ userModel.getJugador = function(id,callback)
 }
 
 //añadir un nuevo jugador
-userModel.insertJugador = function(jugadorData,callback)
+resultModel.insertResultado = function(resultData,callback)
 {
     if (connection)
     {
-        connection.query('INSERT INTO jugadores SET ?', jugadorData, function(error, result)
+        connection.query('INSERT INTO resultados SET ?', resultData, function(error, result)
         {
             if(error)
             {
@@ -99,16 +99,19 @@ userModel.insertJugador = function(jugadorData,callback)
 }
 
 //actualizar un usuario
-userModel.updateJugador = function(jugadorData, callback)
+resultModel.updateResultado = function(resultData, callback)
 {
 //console.log(userData); return;
     if(connection)
     {
-        var sql = 'UPDATE jugadores SET nombre = ' + connection.escape(jugadorData.nombre) + ',' +
-            'apellidos = ' + connection.escape(jugadorData.apellidos) +',' +
-            'correo = ' + connection.escape(jugadorData.correo) +',' +
-            'nivel = ' + connection.escape(jugadorData.nivel) +
-            'WHERE id = ' + jugadorData.id;
+        var sql = 'UPDATE jugadores SET nombre = ' + connection.escape(resultData.fkIdPartido) + ',' +
+            'puntosEquipo1Set1 = ' + connection.escape(resultData.puntosEquipo1Set1) +',' +
+            'puntosEquipo1Set2 = ' + connection.escape(resultData.puntosEquipo1Set2) +',' +
+            'puntosEquipo1Set3 = ' + connection.escape(resultData.puntosEquipo1Set3) +
+            'puntosEquipo2Set1 = ' + connection.escape(resultData.puntosEquipo2Set1) +',' +
+            'puntosEquipo2Set2 = ' + connection.escape(resultData.puntosEquipo2Set2) +',' +
+            'puntosEquipo2Set3 = ' + connection.escape(resultData.puntosEquipo2Set3) +
+            'WHERE id = ' + resultData.id;
 
         connection.query(sql, function(error, result)
         {
@@ -125,7 +128,7 @@ userModel.updateJugador = function(jugadorData, callback)
 }
 
 //eliminar un usuario pasando la id a eliminar
-userModel.deleteJugador = function(id, callback)
+resultModel.deleteResultado = function(id, callback)
 {
     if(connection)
     {
@@ -135,7 +138,7 @@ userModel.deleteJugador = function(id, callback)
 //si existe la id del usuario a eliminar
             if(row)
             {
-                var sql = 'DELETE FROM jugadores WHERE id = ' + connection.escape(id);
+                var sql = 'DELETE FROM resultados WHERE id = ' + connection.escape(id);
                 connection.query(sql, function(error, result)
                 {
                     if(error)
@@ -156,25 +159,5 @@ userModel.deleteJugador = function(id, callback)
     }
 }
 
-userModel.addLevel = function(jugadorData, callback)
-{
-    if(connection)
-    {
-        var sql = 'UPDATE jugadores SET nivel = ' + connection.escape(jugadorData.nivel) +
-            'WHERE id = ' + jugadorData.id;
-
-        connection.query(sql, function(error, result)
-        {
-            if(error)
-            {
-                throw error;
-            }
-            else
-            {
-                callback(null,{"msg":"success"});
-            }
-        });
-    }
-}
 //exportamos el objeto para tenerlo disponible en la zona de rutas
-module.exports = userModel;
+module.exports = resultModel;

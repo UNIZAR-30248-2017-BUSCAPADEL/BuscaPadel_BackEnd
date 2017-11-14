@@ -25,6 +25,7 @@ app.use('/', index);
 //app.use('/partidos', partidos);
 var PartidosCtrl = require('./controllers/partidos');
 var JugadoresCtrl = require('./controllers/jugadores');
+var ResultadosCtrl = require('./controllers/resultados');
 // API routes
 var api = express.Router();
 
@@ -37,6 +38,9 @@ api.route('/partidos/:id')
     .put(PartidosCtrl.update)
     .delete(PartidosCtrl.delete);
 
+api.route('/partido/:id')
+    .put(PartidosCtrl.addPlayer);
+
 api.route('/jugadores')
     .get(JugadoresCtrl.findAll)
     .post(JugadoresCtrl.add);
@@ -45,7 +49,17 @@ api.route('/jugadores/:id')
     .get(JugadoresCtrl.findById)
     .put(JugadoresCtrl.update)
     .delete(JugadoresCtrl.delete);
+api.route('/nivel/:id')
+    .put(JugadoresCtrl.setLevel);
 
+api.route('/resultados')
+    .get(ResultadosCtrl.findAll)
+    .post(ResultadosCtrl.add);
+
+api.route('/resultados/:id')
+    .get(ResultadosCtrl.findById)
+    .put(ResultadosCtrl.update)
+    .delete(ResultadosCtrl.delete);
 app.use('/api', api);
 
 // catch 404 and forward to error handler
