@@ -22,7 +22,6 @@ exports.findById = function(req, res) {
 exports.add = function(req, res) {
     console.log('POST');
     var resultado = {
-        id: req.body.id,
         fkIdPartido: req.body.fkIdPartido,
         puntosEquipo1Set1: req.body.puntosEquipo1Set1,
         puntosEquipo1Set2: req.body.puntosEquipo1Set2,

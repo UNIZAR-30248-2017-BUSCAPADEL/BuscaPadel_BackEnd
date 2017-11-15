@@ -162,20 +162,21 @@ partidosModel.addPlayer = function(partidoData, callback)
 {
     if(connection)
     {
+        console.log(partidoData);
         var sqlExists = 'SELECT fkIdJugador1 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
         connection.query(sqlExists, function(err, row)
         {
-            if(row)
+            if(row[0].fkIdJugador1 !== null)
             {
                 var sqlExists = 'SELECT fkIdJugador2 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
                 connection.query(sqlExists, function(err, row) {
-                    if (row) {
+                    if (row[0].fkIdJugador2 !== null) {
                         var sqlExists = 'SELECT fkIdJugador3 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
                         connection.query(sqlExists, function(err, row) {
-                            if (row) {
+                            if (row[0].fkIdJugador3 !== null) {
                                 var sqlExists = 'SELECT fkIdJugador4 FROM partidos WHERE id = ' + connection.escape(partidoData.id);
                                 connection.query(sqlExists, function(err, row) {
-                                    if (row) {
+                                    if (row[0].fkIdJugador4 !== null) {
                                         callback(null,{"msg":"match Complete"});
                                     }else{
                                         var sql = 'UPDATE partidos SET fkIdJugador4 = ' + connection.escape(partidoData.fkIdJugador1)  + ' WHERE id = ' + connection.escape(partidoData.id);

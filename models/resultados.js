@@ -81,6 +81,7 @@ resultModel.getResultado = function(id,callback)
 //añadir un nuevo jugador
 resultModel.insertResultado = function(resultData,callback)
 {
+    console.log(resultData);
     if (connection)
     {
         connection.query('INSERT INTO resultados SET ?', resultData, function(error, result)
@@ -104,7 +105,7 @@ resultModel.updateResultado = function(resultData, callback)
 //console.log(userData); return;
     if(connection)
     {
-        var sql = 'UPDATE jugadores SET nombre = ' + connection.escape(resultData.fkIdPartido) + ',' +
+        var sql = 'UPDATE jugadores SET fkIdPartido = ' + connection.escape(resultData.fkIdPartido) + ',' +
             'puntosEquipo1Set1 = ' + connection.escape(resultData.puntosEquipo1Set1) +',' +
             'puntosEquipo1Set2 = ' + connection.escape(resultData.puntosEquipo1Set2) +',' +
             'puntosEquipo1Set3 = ' + connection.escape(resultData.puntosEquipo1Set3) +
