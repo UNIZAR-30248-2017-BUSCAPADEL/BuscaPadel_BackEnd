@@ -49,6 +49,13 @@ api.route('/jugadores/:id')
     .get(JugadoresCtrl.findById)
     .put(JugadoresCtrl.update)
     .delete(JugadoresCtrl.delete);
+
+api.route('/registro/:correo')
+    .get(JugadoresCtrl.registro);
+
+api.route('/sesion/:correo')
+    .get(JugadoresCtrl.registro);
+
 api.route('/nivel/:id')
     .put(JugadoresCtrl.setLevel);
 

@@ -176,5 +176,24 @@ userModel.addLevel = function(jugadorData, callback)
         });
     }
 }
+
+userModel.getRegistro = function(correo,callback)
+{
+    if (connection)
+    {
+        var sql = 'SELECT * FROM jugadores WHERE correo = ' + connection.escape(correo);
+        connection.query(sql, function(error, row)
+        {
+            if(error)
+            {
+                throw error;
+            }
+            else
+            {
+                callback(null, row);
+            }
+        });
+    }
+}
 //exportamos el objeto para tenerlo disponible en la zona de rutas
 module.exports = userModel;

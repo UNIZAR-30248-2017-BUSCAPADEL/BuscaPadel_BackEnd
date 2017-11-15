@@ -64,7 +64,6 @@ exports.delete = function(req, res) {
 //PUT - SET LEVEL PLAYER
 exports.setLevel = function(req, res) {
     JugadorModel.getJugador(req.params.id, function(err, partido) {
-        console.log(req.body);
         var jugador = {
             id: req.params.id,
             nivel: req.body.nivel
@@ -73,5 +72,12 @@ exports.setLevel = function(req, res) {
             if(err) return res.send(500, err.message);
             res.status(200).jsonp(jugador);
         });
+    });
+};
+
+exports.registro = function (req, res) {
+    JugadorModel.getRegistro(req.params.correo, function(err, jugador) {
+        if(err) return res.send(500, err.message);
+        res.status(200).jsonp(jugador);
     });
 };
