@@ -7,4 +7,8 @@ CREATE TABLE ligas (
 
 ALTER TABLE partidos ADD COLUMN fkIdLiga int(11) DEFAULT NULL;
 
-ALTER TABLE partidos ADD   CONSTRAINT `partidos_LIGA` FOREIGN KEY (`fkIdLiga`) REFERENCES `liga` (`id`) ON UPDATE CASCADE;
+ALTER TABLE partidos ADD   CONSTRAINT `partidos_LIGA` FOREIGN KEY (`fkIdLiga`) REFERENCES `ligas` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE jugadores ADD COLUMN fkIdLiga int(11) DEFAULT NULL;
+
+ALTER TABLE jugadores ADD   CONSTRAINT `jugadores_LIGA` FOREIGN KEY (`fkIdLiga`) REFERENCES `ligas` (`id`) ON UPDATE CASCADE;
