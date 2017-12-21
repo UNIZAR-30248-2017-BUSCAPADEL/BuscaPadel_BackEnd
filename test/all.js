@@ -16,6 +16,8 @@ function normalizePort(val) {
 
     return false;
 }
+console.log(port);
+console.log(port === 3000);
 if(port === 3000){
     exports['test'] = function(assert, done) {
         var request = require('request');
