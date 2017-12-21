@@ -72,4 +72,4 @@ if(port === 3000){
 }
 
 
-if (module === require.main) require('test').run(exports)
+if (module === require.main) require('test').run(exports);
