@@ -16,7 +16,7 @@ function normalizePort(val) {
 
     return false;
 }
-console.log(rocess.env.PORT);
+console.log(process.env.PORT);
 console.log(port);
 console.log(port === 3000);
 if(port === 3000){
