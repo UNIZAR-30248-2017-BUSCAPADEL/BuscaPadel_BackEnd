@@ -1,19 +1,20 @@
-var JugadorModel = require('../models/jugadores');
+var LigaModel = require('../models/ligas');
+var JugadoresModel = require('../models/jugadores');
 
 //GET - Return all registers
 exports.findAll = function(req, res) {
-    JugadorModel.getJugadores(function(err, clients) {
+    LigaModel.getLigas(function(err, clients) {
         if(err) res.send(500, err.message);
-        console.log('GET /partidos')
+        console.log('GET /ligas')
         res.status(200).jsonp(clients);
     });
 };
 
 //GET - Return a register with specified ID
 exports.findById = function(req, res) {
-    JugadorModel.getJugador(req.params.id, function(err, client) {
+    LigaModel.getLiga(req.params.id, function(err, client) {
         if(err) return res.send(500, err.message);
-        console.log('GET /partidos/' + req.params.id);
+        console.log('GET /ligas/' + req.params.id);
         res.status(200).jsonp(client);
     });
 };
@@ -22,14 +23,12 @@ exports.findById = function(req, res) {
 exports.add = function(req, res) {
     console.log('POST');
     console.log(req.body);
-    var jugador = {
+    var liga = {
         id: req.body.id,
         nombre: req.body.nombre,
-        contrasena: req.body.contrasena,
-        correo: req.body.correo,
-        nivel: req.body.nivel
+        numJugadores: req.body.numJugadores
     };
-    JugadorModel.insertJugador(jugador, function(err, client) {
+    LigaModel.insertLiga(liga, function(err, client) {
         if(err) return res.send(500, err.message);
         res.status(200).jsonp(client);
     });
@@ -37,16 +36,14 @@ exports.add = function(req, res) {
 
 //PUT - Update a register already exists
 exports.update = function(req, res) {
-    JugadorModel.getJugador(req.params.id, function(err, partido) {
+    LigaModel.getLiga(req.params.id, function(err, partido) {
         console.log(req.body);
-        var jugador = {
+        var liga = {
             id: req.params.id,
             nombre: req.body.nombre,
-            contrasena: req.body.contrasena,
-            correo: req.body.correo,
-            nivel: req.body.nivel
+            numJugadores: req.body.numJugadores
         };
-        JugadorModel.updateJugador(jugador, function(err) {
+        LigaModel.updateLiga(liga, function(err) {
             if(err) return res.send(500, err.message);
             res.status(200).jsonp(jugador);
         });
@@ -55,7 +52,7 @@ exports.update = function(req, res) {
 
 //DELETE - Delete a register with specified ID
 exports.delete = function(req, res) {
-    JugadorModel.deleteJugador(req.params.id, function(err, partido) {
+    LigaModel.deleteLiga(req.params.id, function(err, partido) {
         if(err) return res.send(500, err.message);
         res.json({ message: 'Successfully deleted' });
     });
@@ -63,21 +60,14 @@ exports.delete = function(req, res) {
 
 //PUT - SET LEVEL PLAYER
 exports.setLevel = function(req, res) {
-    JugadorModel.getJugador(req.params.id, function(err, partido) {
+    LigaModel.getJugador(req.params.id, function(err, partido) {
         var jugador = {
             id: req.params.id,
             nivel: req.body.nivel
         };
-        JugadorModel.addLevel(jugador, function(err) {
+        LigaModel.addLevel(jugador, function(err) {
             if(err) return res.send(500, err.message);
             res.status(200).jsonp(jugador);
         });
-    });
-};
-
-exports.registro = function (req, res) {
-    JugadorModel.getRegistro(req.params.correo, function(err, jugador) {
-        if(err) return res.send(500, err.message);
-        res.status(200).jsonp(jugador);
     });
 };

@@ -7,6 +7,8 @@ CREATE TABLE jugadores (
   PRIMARY KEY (id)
 );
 
+ALTER TABLE jugadores CHANGE COLUMN apellidos contrasena VARCHAR(50) DEFAULT NULL;
+
 CREATE TABLE partidos (
   id int(11) AUTO_INCREMENT NOT NULL,
   fkIdJugador1 int(11) DEFAULT NULL,

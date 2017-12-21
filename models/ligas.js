@@ -38,14 +38,14 @@ if(port === 3000){
 }
 
 //creamos un objeto para ir almacenando todo lo que necesitemos
-var userModel = {};
+var ligaModel = {};
 
-//obtenemos todos los jugadores
-userModel.getJugadores = function(callback)
+//obtenemos todas las ligas
+ligaModel.getLigas = function(callback)
 {
     if (connection)
     {
-        connection.query('SELECT * FROM jugadores ORDER BY id', function(error, rows) {
+        connection.query('SELECT * FROM ligas ORDER BY id', function(error, rows) {
             if(error)
             {
                 throw error;
@@ -58,12 +58,12 @@ userModel.getJugadores = function(callback)
     }
 }
 
-//obtenemos un jugador por su id
-userModel.getJugador = function(id,callback)
+//obtenemos una liga por su id
+ligaModel.getLiga = function(id,callback)
 {
     if (connection)
     {
-        var sql = 'SELECT * FROM jugadores WHERE id = ' + connection.escape(id);
+        var sql = 'SELECT * FROM ligas WHERE id = ' + connection.escape(id);
         connection.query(sql, function(error, row)
         {
             if(error)
@@ -78,12 +78,12 @@ userModel.getJugador = function(id,callback)
     }
 }
 
-//añadir un nuevo jugador
-userModel.insertJugador = function(jugadorData,callback)
+//añadir una nueva liga
+ligaModel.insertLiga = function(ligaData,callback)
 {
     if (connection)
     {
-        connection.query('INSERT INTO jugadores SET ?', jugadorData, function(error, result)
+        connection.query('INSERT INTO ligas SET ?', ligaData, function(error, result)
         {
             if(error)
             {
@@ -91,23 +91,21 @@ userModel.insertJugador = function(jugadorData,callback)
             }
             else
             {
-//devolvemos la última id insertada
+            //devolvemos la última id insertada
                 callback(null,{"insertId" : result.insertId});
             }
         });
     }
 }
 
-//actualizar un usuario
-userModel.updateJugador = function(jugadorData, callback)
+//actualizar una liga
+ligaModel.updateLiga = function(ligaData, callback)
 {
 //console.log(userData); return;
     if(connection)
     {
-        var sql = 'UPDATE jugadores SET nombre = ' + connection.escape(jugadorData.nombre) + ',' +
-            'contrasena = ' + connection.escape(jugadorData.contrasena) +',' +
-            'correo = ' + connection.escape(jugadorData.correo) +',' +
-            'nivel = ' + connection.escape(jugadorData.nivel) +
+        var sql = 'UPDATE ligas SET nombre = ' + connection.escape(ligaData.nombre) + ',' +
+            'numJugadore = ' + connection.escape(ligaData.apellidos) +
             'WHERE id = ' + jugadorData.id;
 
         connection.query(sql, function(error, result)
@@ -124,18 +122,18 @@ userModel.updateJugador = function(jugadorData, callback)
     }
 }
 
-//eliminar un usuario pasando la id a eliminar
-userModel.deleteJugador = function(id, callback)
+//eliminar una liga pasando la id a eliminar
+ligaModel.deleteLiga = function(id, callback)
 {
     if(connection)
     {
-        var sqlExists = 'SELECT * FROM jugadores WHERE id = ' + connection.escape(id);
+        var sqlExists = 'SELECT * FROM ligas WHERE id = ' + connection.escape(id);
         connection.query(sqlExists, function(err, row)
         {
 //si existe la id del usuario a eliminar
             if(row)
             {
-                var sql = 'DELETE FROM jugadores WHERE id = ' + connection.escape(id);
+                var sql = 'DELETE FROM ligas WHERE id = ' + connection.escape(id);
                 connection.query(sql, function(error, result)
                 {
                     if(error)
@@ -156,44 +154,5 @@ userModel.deleteJugador = function(id, callback)
     }
 }
 
-userModel.addLevel = function(jugadorData, callback)
-{
-    if(connection)
-    {
-        var sql = 'UPDATE jugadores SET nivel = ' + connection.escape(jugadorData.nivel) +
-            'WHERE id = ' + jugadorData.id;
-
-        connection.query(sql, function(error, result)
-        {
-            if(error)
-            {
-                throw error;
-            }
-            else
-            {
-                callback(null,{"msg":"success"});
-            }
-        });
-    }
-}
-
-userModel.getRegistro = function(correo,callback)
-{
-    if (connection)
-    {
-        var sql = 'SELECT * FROM jugadores WHERE correo = ' + connection.escape(correo);
-        connection.query(sql, function(error, row)
-        {
-            if(error)
-            {
-                throw error;
-            }
-            else
-            {
-                callback(null, row);
-            }
-        });
-    }
-}
 //exportamos el objeto para tenerlo disponible en la zona de rutas
-module.exports = userModel;
+module.exports = ligaModel;
