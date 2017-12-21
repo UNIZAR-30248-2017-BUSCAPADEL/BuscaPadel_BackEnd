@@ -16,9 +16,6 @@ function normalizePort(val) {
 
     return false;
 }
-console.log(process.env.PORT);
-console.log(port);
-console.log(port === 3000);
 if(port === 3000){
     exports['test'] = function(assert, done) {
         var request = require('request');
@@ -48,7 +45,7 @@ if(port === 3000){
                 done() // telling test runner that we're done with this test
             })
         })*/
-    }
+    };
 }else{
     exports['test'] = function(assert, done) {
         var request = require('request');
@@ -72,7 +69,7 @@ if(port === 3000){
                 done() // telling test runner that we're done with this test
             })
         })*/
-    }
+    };
 }
 
 
