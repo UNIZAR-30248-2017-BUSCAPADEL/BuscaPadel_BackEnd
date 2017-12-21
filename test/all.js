@@ -16,12 +16,14 @@ function normalizePort(val) {
 
     return false;
 }
+console.log(rocess.env.PORT);
 console.log(port);
 console.log(port === 3000);
 if(port === 3000){
     exports['test'] = function(assert, done) {
         var request = require('request');
-        request('http://localhost:3000/api/jugadores', function (error, response, body) {
+        //request('http://localhost:3000/api/jugadores', function (error, response, body) {
+        request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 assert.equal(response.statusCode, 200, 'all ok');
             }else{
