@@ -20,7 +20,11 @@ if(port === 3000){
     exports['test'] = function(assert, done) {
         var request = require('request');
         request('http://localhost:3000/api/jugadores', function (error, response, body) {
-            assert.equal(response.statusCode, 200, 'all ok');
+            if (!error && response.statusCode == 200) {
+                assert.equal(response.statusCode, 200, 'all ok');
+            }else{
+                console.log(error);
+            }
         });
         //var http = require('http');
         //var google = http.createClient(3000, 'localhost');
@@ -45,7 +49,12 @@ if(port === 3000){
     exports['test'] = function(assert, done) {
         var request = require('request');
         request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-            assert.equal(response.statusCode, 200, 'all ok');
+            if (!error && response.statusCode == 200) {
+                assert.equal(response.statusCode, 200, 'all ok');
+            }else{
+                console.log(error);
+            }
+
         });
         //var http = require('http');
         //var google = http.createClient(3000, 'localhost');
