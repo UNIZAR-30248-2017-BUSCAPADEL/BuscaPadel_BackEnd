@@ -1,4 +1,4 @@
-CREATE TABLE liga (
+CREATE TABLE ligas (
   id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   nombre VARCHAR(100) DEFAULT NULL ,
   numJugadores int(3) DEFAULT NULL
