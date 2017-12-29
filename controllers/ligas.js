@@ -45,7 +45,7 @@ exports.update = function(req, res) {
         };
         LigaModel.updateLiga(liga, function(err) {
             if(err) return res.send(500, err.message);
-            res.status(200).jsonp(jugador);
+            res.status(200).jsonp(liga);
         });
     });
 };
@@ -54,20 +54,6 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
     LigaModel.deleteLiga(req.params.id, function(err, partido) {
         if(err) return res.send(500, err.message);
-        res.json({ message: 'Successfully deleted' });
-    });
-};
-
-//PUT - SET LEVEL PLAYER
-exports.setLevel = function(req, res) {
-    LigaModel.getJugador(req.params.id, function(err, partido) {
-        var jugador = {
-            id: req.params.id,
-            nivel: req.body.nivel
-        };
-        LigaModel.addLevel(jugador, function(err) {
-            if(err) return res.send(500, err.message);
-            res.status(200).jsonp(jugador);
-        });
+        res.status(200).jsonp({ message: 'Successfully deleted' });
     });
 };

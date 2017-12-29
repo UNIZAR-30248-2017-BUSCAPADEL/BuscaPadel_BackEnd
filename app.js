@@ -26,6 +26,7 @@ app.use('/', index);
 var PartidosCtrl = require('./controllers/partidos');
 var JugadoresCtrl = require('./controllers/jugadores');
 var ResultadosCtrl = require('./controllers/resultados');
+var LigasCtrl = require('./controllers/ligas');
 // API routes
 var api = express.Router();
 
@@ -67,6 +68,13 @@ api.route('/resultados/:id')
     .get(ResultadosCtrl.findById)
     .put(ResultadosCtrl.update)
     .delete(ResultadosCtrl.delete);
+api.route('/ligas')
+    .get(LigasCtrl.findAll)
+    .post(LigasCtrl.add);
+api.route('/ligas/:id')
+    .get(LigasCtrl.findById)
+    .put(LigasCtrl.update)
+    .delete(LigasCtrl.delete);
 app.use('/api', api);
 
 // catch 404 and forward to error handler
