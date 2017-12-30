@@ -1,7 +1,7 @@
 // if test function expects second named argument it will be executed
 // in async mode and test will be complete only after callback is called
-const PORT = process.env.PORT || 3000;
-console.log(PORT);
+var env = process.env.npm_config_prefix;
+console.log(process.env.npm_config_prefix);
 function normalizePort(val) {
     var port = parseInt(val, 10);
 
@@ -17,7 +17,7 @@ function normalizePort(val) {
 
     return false;
 }
-if(PORT === 3000){
+if(env === '/usr/local'){
     exports['test'] = function(assert, done) {
         var request = require('request');
         //GET jugadores
