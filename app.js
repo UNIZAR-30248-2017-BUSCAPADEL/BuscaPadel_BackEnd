@@ -75,6 +75,8 @@ api.route('/ligas/:id')
     .get(LigasCtrl.findById)
     .put(LigasCtrl.update)
     .delete(LigasCtrl.delete);
+api.route('/liga/:id')
+    .put(LigasCtrl.addPlayer);
 app.use('/api', api);
 
 // catch 404 and forward to error handler

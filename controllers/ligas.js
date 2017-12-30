@@ -57,3 +57,15 @@ exports.delete = function(req, res) {
         res.status(200).jsonp({ message: 'Successfully deleted' });
     });
 };
+
+//Añadir jugador a liga
+exports.addPlayer = function(req, res) {
+    var jugador = {
+        id: req.params.id,
+        fkIdLiga: req.body.fkIdLiga
+    };
+    JugadoresModel.addPlayer(jugador, function(err, partido) {
+        if(err) return res.send(500, err.message);
+        res.status(200).jsonp({ message: 'Player to league' });
+    });
+};

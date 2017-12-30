@@ -90,9 +90,90 @@ if(env === '/usr/local'){
             'User-Agent':       'Super Agent/0.0.1',
             'Content-Type':     'application/x-www-form-urlencoded'
         };
-
-        // Configure the request
+        /*
+        // Configurar petición para tests de resultados
         var options = {
+            url: 'http://localhost:3000/api/partidos',
+            method: 'POST',
+            headers: headers,
+            form: { 'fkIdJugador1': 2, 'fkIdJugador2' : 3, 'fkIdJugador3': 4, 'fkIdJugador4': 5,
+                    'lugar': 'Plaza Imperial', 'hora':'08:08:08', 'fecha': '2017-01-01', 'nivel': 6}
+        };
+        // Comienzo de POST
+
+        request(options, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                // Print out the response body
+                assert.equal(response.statusCode, 200, 'POST partidos OK');
+                parsedBody = JSON.parse(body);
+                idInsert = parsedBody.insertId;
+                //DELETE
+                // Configure the request
+                var optionsDelete = {
+                    url: 'http://localhost:3000/api/partidos/'+idInsert,
+                    method: 'DELETE'
+                };
+                // Start the request
+                request(optionsDelete, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        // Print out the response body
+                        assert.equal(response.statusCode, 200, 'DELETE partidos OK');
+                        //GET ligas de liga borrada
+                        request('http://localhost:3000/api/partidos/'+idInsert, function (error, response, body) {
+                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                parsedBody = JSON.parse(body);
+                                vacio = !Object.keys(parsedBody).length;
+                                assert.equal(vacio, true, 'Eliminado '+idInsert+' OK');
+                            }else{
+                                console.log(error);
+                            }
+                            // Comienzo de POST
+                            request(options, function (error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                    // Print out the response body
+                                    assert.equal(response.statusCode, 200, 'POST partidos OK');
+                                    parsedBody = JSON.parse(body);
+                                    idInsert = parsedBody.insertId;
+                                    //PUT
+                                    // Configure the request
+                                    var optionsPut = {
+                                        url: 'http://localhost:3000/api/partidos/'+idInsert,
+                                        method: 'PUT',
+                                        headers: headers,
+                                        form: { 'fkIdJugador1': 2, 'fkIdJugador2' : 3, 'fkIdJugador3': 4, 'fkIdJugador4': 5,
+                                            'lugar': 'Plaza Imperial 2', 'hora':'08:08:08', 'fecha': '2017-01-01', 'nivel': 6}
+                                    };
+                                    // Start the request
+                                    request(optionsPut, function (error, response, body) {
+                                        if (!error && response.statusCode == 200) {
+                                            // Print out the response body
+                                            assert.equal(response.statusCode, 200, 'PUT ligas OK');
+                                            //GET ligas de liga borrada
+                                            request('http://localhost:3000/api/partidos/'+idInsert, function (error, response, body) {
+                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                if (!error && response.statusCode == 200) {
+                                                    parsedBody = JSON.parse(body);
+                                                    vacio = !Object.keys(parsedBody).length;
+                                                    assert.equal(vacio, false, 'Modificado '+idInsert+' OK');
+                                                }else{
+                                                    console.log(error);
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                }
+                            });
+                        });
+                    }
+                });
+
+            }
+        });
+        */
+        // Configure the request para tests de ligas
+        /*var options = {
             url: 'http://localhost:3000/api/ligas',
             method: 'POST',
             headers: headers,
@@ -147,7 +228,7 @@ if(env === '/usr/local'){
                                         if (!error && response.statusCode == 200) {
                                             // Print out the response body
                                             assert.equal(response.statusCode, 200, 'PUT ligas OK');
-                                            //GET ligas de liga borrada
+                                            //GET ligas de liga modificada
                                             request('http://localhost:3000/api/ligas/'+idInsert, function (error, response, body) {
                                                 //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
                                                 if (!error && response.statusCode == 200) {
@@ -169,44 +250,20 @@ if(env === '/usr/local'){
 
             }
         });
-        /*
-        // Comienzo de POST
+        */
+        var options = {
+            url: 'http://localhost:3000/api/liga/5',
+            method: 'PUT',
+            headers: headers,
+            form: { 'fkIdLiga': 6}
+        };
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                // Print out the response body
-                assert.equal(response.statusCode, 200, 'POST ligas OK');
-                parsedBody = JSON.parse(body);
-                idInsert = parsedBody.insertId;
-                //PUT
-                // Configure the request
-                var optionsPut = {
-                    url: 'http://localhost:3000/api/ligas/'+idInsert,
-                    method: 'PUT',
-                    headers: headers,
-                    form: { 'nombre': 'ligaPut', 'numJugadores' : 16}
-                };
-                // Start the request
-                request(optionsPut, function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        // Print out the response body
-                        assert.equal(response.statusCode, 200, 'PUT ligas OK');
-                        //GET ligas de liga borrada
-                        request('http://localhost:3000/api/ligas/'+idInsert, function (error, response, body) {
-                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                parsedBody = JSON.parse(body);
-                                vacio = !Object.keys(parsedBody).length;
-                                assert.equal(vacio, false, 'Modificado '+idInsert+' OK');
-                            }else{
-                                console.log(error);
-                            }
-                        });
-                    }
-                });
-
+                assert.equal(response.statusCode, 200, 'PUT jugador liga OK');
+            } else {
+                console.log(error);
             }
         });
-        */
     };
 }else{
     exports['test'] = function(assert, done) {

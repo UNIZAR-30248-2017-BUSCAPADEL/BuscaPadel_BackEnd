@@ -195,5 +195,25 @@ userModel.getRegistro = function(correo,callback)
         });
     }
 }
+userModel.addPlayer = function(jugadorData,callback)
+{
+    if(connection)
+    {
+        var sql = 'UPDATE jugadores SET fkIdLiga = ' + connection.escape(jugadorData.fkIdLiga) +
+            'WHERE id = ' + jugadorData.id;
+
+        connection.query(sql, function(error, result)
+        {
+            if(error)
+            {
+                throw error;
+            }
+            else
+            {
+                callback(null,{"msg":"success"});
+            }
+        });
+    }
+}
 //exportamos el objeto para tenerlo disponible en la zona de rutas
 module.exports = userModel;
