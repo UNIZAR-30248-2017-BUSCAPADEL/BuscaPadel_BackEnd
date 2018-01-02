@@ -105,15 +105,15 @@ resultModel.updateResultado = function(resultData, callback)
 //console.log(userData); return;
     if(connection)
     {
-        var sql = 'UPDATE jugadores SET fkIdPartido = ' + connection.escape(resultData.fkIdPartido) + ',' +
+        var sql = 'UPDATE resultados SET fkIdPartido = ' + connection.escape(resultData.fkIdPartido) + ',' +
             'puntosEquipo1Set1 = ' + connection.escape(resultData.puntosEquipo1Set1) +',' +
             'puntosEquipo1Set2 = ' + connection.escape(resultData.puntosEquipo1Set2) +',' +
-            'puntosEquipo1Set3 = ' + connection.escape(resultData.puntosEquipo1Set3) +
+            'puntosEquipo1Set3 = ' + connection.escape(resultData.puntosEquipo1Set3) +',' +
             'puntosEquipo2Set1 = ' + connection.escape(resultData.puntosEquipo2Set1) +',' +
             'puntosEquipo2Set2 = ' + connection.escape(resultData.puntosEquipo2Set2) +',' +
             'puntosEquipo2Set3 = ' + connection.escape(resultData.puntosEquipo2Set3) +
-            'WHERE id = ' + resultData.id;
-
+            ' WHERE id = ' + resultData.id;
+        console.log(sql);
         connection.query(sql, function(error, result)
         {
             if(error)
@@ -133,7 +133,7 @@ resultModel.deleteResultado = function(id, callback)
 {
     if(connection)
     {
-        var sqlExists = 'SELECT * FROM jugadores WHERE id = ' + connection.escape(id);
+        var sqlExists = 'SELECT * FROM resultados WHERE id = ' + connection.escape(id);
         connection.query(sqlExists, function(err, row)
         {
 //si existe la id del usuario a eliminar

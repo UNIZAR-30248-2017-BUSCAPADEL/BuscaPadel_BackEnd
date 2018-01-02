@@ -41,7 +41,7 @@ exports.update = function(req, res) {
     ResultadoModel.getResultado(req.params.id, function(err, partido) {
         console.log(req.body);
         var resultado = {
-            id: req.body.id,
+            id: req.params.id,
             fkIdPartido: req.body.fkIdPartido,
             puntosEquipo1Set1: req.body.puntosEquipo1Set1,
             puntosEquipo1Set2: req.body.puntosEquipo1Set2,
