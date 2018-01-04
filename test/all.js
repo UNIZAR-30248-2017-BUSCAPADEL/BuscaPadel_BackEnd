@@ -20,44 +20,7 @@ function normalizePort(val) {
 if(env === '/usr/local'){
     exports['test'] = function(assert, done) {
         var request = require('request');
-        /*
-        //GET jugadores
-        request('http://localhost:3000/api/jugadores', function (error, response, body) {
-        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET jugadores OK');
-                //GET partidos
-                request('http://localhost:3000/api/partidos', function (error, response, body) {
-                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        assert.equal(response.statusCode, 200, 'GET partidos OK');
-                        //GET resultados
-                        request('http://localhost:3000/api/resultados', function (error, response, body) {
-                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                assert.equal(response.statusCode, 200, 'GET resultados OK');
-                                //GET ligas
-                                request('http://localhost:3000/api/ligas', function (error, response, body) {
-                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-                                    if (!error && response.statusCode == 200) {
-                                        assert.equal(response.statusCode, 200, 'GET ligas OK');
-                                    }else{
-                                        console.log(error);
-                                    }
-                                });
-                            }else{
-                                console.log(error);
-                            }
-                        });
-                    }else{
-                        console.log(error);
-                    }
-                });
-            }else{
-                console.log(error);
-            }
-        });
-        */
+
         // Set the headers
         var headers = {
             'User-Agent':       'Super Agent/0.0.1',
@@ -129,160 +92,318 @@ if(env === '/usr/local'){
                                                     parsedBody = JSON.parse(body);
                                                     vacio = !Object.keys(parsedBody).length;
                                                     assert.equal(vacio, false, 'Modificado partidos '+idInsert+' OK');
-                                                    // Configure the request para tests de ligas
-                                                    var options = {
-                                                        url: 'http://localhost:3000/api/ligas',
-                                                        method: 'POST',
+                                                    //PUT
+                                                    // Configure the request
+                                                    var optionsPut = {
+                                                        url: 'http://localhost:3000/api/partido/'+idInsert,
+                                                        method: 'PUT',
                                                         headers: headers,
-                                                        form: { 'nombre': 'ligaPost', 'numJugadores' : 16}
+                                                        form: { 'fkIdJugador1': 8}
                                                     };
-                                                    // Comienzo de POST
-                                                    request(options, function (error, response, body) {
+                                                    // Start the request
+                                                    request(optionsPut, function (error, response, body) {
                                                         if (!error && response.statusCode == 200) {
                                                             // Print out the response body
-                                                            assert.equal(response.statusCode, 200, 'POST ligas OK');
-                                                            parsedBody = JSON.parse(body);
-                                                            idInsert = parsedBody.insertId;
-                                                            //DELETE
-                                                            // Configure the request
-                                                            var optionsDelete = {
-                                                                url: 'http://localhost:3000/api/ligas/'+idInsert,
-                                                                method: 'DELETE'
+                                                            assert.equal(response.statusCode, 200, 'PUT partido OK');
+                                                            // Configure the request para tests de ligas
+                                                            var options = {
+                                                                url: 'http://localhost:3000/api/ligas',
+                                                                method: 'POST',
+                                                                headers: headers,
+                                                                form: { 'nombre': 'ligaPost', 'numJugadores' : 16}
                                                             };
-                                                            // Start the request
-                                                            request(optionsDelete, function (error, response, body) {
+                                                            // Comienzo de POST
+                                                            request(options, function (error, response, body) {
                                                                 if (!error && response.statusCode == 200) {
                                                                     // Print out the response body
-                                                                    assert.equal(response.statusCode, 200, 'DELETE ligas OK');
-                                                                    //GET ligas de liga borrada
-                                                                    request('http://localhost:3000/api/ligas/'+idInsert, function (error, response, body) {
-                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                    assert.equal(response.statusCode, 200, 'POST ligas OK');
+                                                                    parsedBody = JSON.parse(body);
+                                                                    idInsert = parsedBody.insertId;
+                                                                    //DELETE
+                                                                    // Configure the request
+                                                                    var optionsDelete = {
+                                                                        url: 'http://localhost:3000/api/ligas/'+idInsert,
+                                                                        method: 'DELETE'
+                                                                    };
+                                                                    // Start the request
+                                                                    request(optionsDelete, function (error, response, body) {
                                                                         if (!error && response.statusCode == 200) {
-                                                                            parsedBody = JSON.parse(body);
-                                                                            vacio = !Object.keys(parsedBody).length;
-                                                                            assert.equal(vacio, true, 'Eliminado '+idInsert+' OK');
-                                                                        }else{
-                                                                            console.log(error);
-                                                                        }
-                                                                        // Comienzo de POST
-                                                                        request(options, function (error, response, body) {
-                                                                            if (!error && response.statusCode == 200) {
-                                                                                // Print out the response body
-                                                                                assert.equal(response.statusCode, 200, 'POST ligas OK');
-                                                                                parsedBody = JSON.parse(body);
-                                                                                idInsert = parsedBody.insertId;
-                                                                                //PUT
-                                                                                // Configure the request
-                                                                                var optionsPut = {
-                                                                                    url: 'http://localhost:3000/api/ligas/'+idInsert,
-                                                                                    method: 'PUT',
-                                                                                    headers: headers,
-                                                                                    form: { 'nombre': 'ligaPut', 'numJugadores' : 16}
-                                                                                };
-                                                                                // Start the request
-                                                                                request(optionsPut, function (error, response, body) {
+                                                                            // Print out the response body
+                                                                            assert.equal(response.statusCode, 200, 'DELETE ligas OK');
+                                                                            //GET ligas de liga borrada
+                                                                            request('http://localhost:3000/api/ligas/'+idInsert, function (error, response, body) {
+                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                if (!error && response.statusCode == 200) {
+                                                                                    parsedBody = JSON.parse(body);
+                                                                                    vacio = !Object.keys(parsedBody).length;
+                                                                                    assert.equal(vacio, true, 'Eliminado '+idInsert+' OK');
+                                                                                }else{
+                                                                                    console.log(error);
+                                                                                }
+                                                                                // Comienzo de POST
+                                                                                request(options, function (error, response, body) {
                                                                                     if (!error && response.statusCode == 200) {
                                                                                         // Print out the response body
-                                                                                        assert.equal(response.statusCode, 200, 'PUT ligas OK');
-                                                                                        //GET ligas de liga modificada
-                                                                                        request('http://localhost:3000/api/ligas/'+idInsert, function (error, response, body) {
-                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                        assert.equal(response.statusCode, 200, 'POST ligas OK');
+                                                                                        parsedBody = JSON.parse(body);
+                                                                                        idInsert = parsedBody.insertId;
+                                                                                        //PUT
+                                                                                        // Configure the request
+                                                                                        var optionsPut = {
+                                                                                            url: 'http://localhost:3000/api/ligas/'+idInsert,
+                                                                                            method: 'PUT',
+                                                                                            headers: headers,
+                                                                                            form: { 'nombre': 'ligaPut', 'numJugadores' : 16}
+                                                                                        };
+                                                                                        // Start the request
+                                                                                        request(optionsPut, function (error, response, body) {
                                                                                             if (!error && response.statusCode == 200) {
-                                                                                                parsedBody = JSON.parse(body);
-                                                                                                vacio = !Object.keys(parsedBody).length;
-                                                                                                assert.equal(vacio, false, 'Modificado ligas '+idInsert+' OK');
-                                                                                                // Configure the request para tests de resultados
-                                                                                                var options = {
-                                                                                                    url: 'http://localhost:3000/api/resultados',
-                                                                                                    method: 'POST',
-                                                                                                    headers: headers,
-                                                                                                    form: { 'fkIdPartido': 5, 'puntosEquipo1Set1' : 3, 'puntosEquipo1Set2': 6, 'puntosEquipo1Set3': 4,
-                                                                                                        'puntosEquipo2Set1': 6, 'puntosEquipo2Set2':4, 'puntosEquipo2Set3': 6}
-                                                                                                };
-                                                                                                // Comienzo de POST
-                                                                                                request(options, function (error, response, body) {
+                                                                                                // Print out the response body
+                                                                                                assert.equal(response.statusCode, 200, 'PUT ligas OK');
+                                                                                                //GET ligas de liga modificada
+                                                                                                request('http://localhost:3000/api/ligas/'+idInsert, function (error, response, body) {
+                                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
                                                                                                     if (!error && response.statusCode == 200) {
-                                                                                                        // Print out the response body
-                                                                                                        assert.equal(response.statusCode, 200, 'POST resultados OK');
                                                                                                         parsedBody = JSON.parse(body);
-                                                                                                        idInsert = parsedBody.insertId;
-                                                                                                        //DELETE
-                                                                                                        // Configure the request
-                                                                                                        var optionsDelete = {
-                                                                                                            url: 'http://localhost:3000/api/resultados/'+idInsert,
-                                                                                                            method: 'DELETE'
+                                                                                                        vacio = !Object.keys(parsedBody).length;
+                                                                                                        assert.equal(vacio, false, 'Modificado ligas '+idInsert+' OK');
+                                                                                                        // Configure the request para tests de resultados
+                                                                                                        var options = {
+                                                                                                            url: 'http://localhost:3000/api/resultados',
+                                                                                                            method: 'POST',
+                                                                                                            headers: headers,
+                                                                                                            form: { 'fkIdPartido': 5, 'puntosEquipo1Set1' : 3, 'puntosEquipo1Set2': 6, 'puntosEquipo1Set3': 4,
+                                                                                                                'puntosEquipo2Set1': 6, 'puntosEquipo2Set2':4, 'puntosEquipo2Set3': 6}
                                                                                                         };
-                                                                                                        // Start the request
-                                                                                                        request(optionsDelete, function (error, response, body) {
+                                                                                                        // Comienzo de POST
+                                                                                                        request(options, function (error, response, body) {
                                                                                                             if (!error && response.statusCode == 200) {
                                                                                                                 // Print out the response body
-                                                                                                                assert.equal(response.statusCode, 200, 'DELETE resultados OK');
-                                                                                                                //GET ligas de liga borrada
-                                                                                                                request('http://localhost:3000/api/resultados/'+idInsert, function (error, response, body) {
-                                                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                assert.equal(response.statusCode, 200, 'POST resultados OK');
+                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                idInsert = parsedBody.insertId;
+                                                                                                                //DELETE
+                                                                                                                // Configure the request
+                                                                                                                var optionsDelete = {
+                                                                                                                    url: 'http://localhost:3000/api/resultados/'+idInsert,
+                                                                                                                    method: 'DELETE'
+                                                                                                                };
+                                                                                                                // Start the request
+                                                                                                                request(optionsDelete, function (error, response, body) {
                                                                                                                     if (!error && response.statusCode == 200) {
-                                                                                                                        parsedBody = JSON.parse(body);
-                                                                                                                        vacio = !Object.keys(parsedBody).length;
-                                                                                                                        assert.equal(vacio, true, 'Eliminado resultado '+idInsert+' OK');
-                                                                                                                    }else{
-                                                                                                                        console.log(error);
-                                                                                                                    }
-                                                                                                                    // Comienzo de POST
-                                                                                                                    request(options, function (error, response, body) {
-                                                                                                                        if (!error && response.statusCode == 200) {
-                                                                                                                            // Print out the response body
-                                                                                                                            assert.equal(response.statusCode, 200, 'POST resultados OK');
-                                                                                                                            parsedBody = JSON.parse(body);
-                                                                                                                            idInsert = parsedBody.insertId;
-                                                                                                                            //PUT
-                                                                                                                            // Configure the request
-                                                                                                                            var optionsPut = {
-                                                                                                                                url: 'http://localhost:3000/api/resultados/'+idInsert,
-                                                                                                                                method: 'PUT',
-                                                                                                                                headers: headers,
-                                                                                                                                form: { 'fkIdPartido': 5, 'puntosEquipo1Set1' : 3, 'puntosEquipo1Set2': 6, 'puntosEquipo1Set3': 6,
-                                                                                                                                    'puntosEquipo2Set1': 6, 'puntosEquipo2Set2':4, 'puntosEquipo2Set3': 7}
-                                                                                                                            };
-                                                                                                                            // Start the request
-                                                                                                                            request(optionsPut, function (error, response, body) {
+                                                                                                                        // Print out the response body
+                                                                                                                        assert.equal(response.statusCode, 200, 'DELETE resultados OK');
+                                                                                                                        //GET ligas de liga borrada
+                                                                                                                        request('http://localhost:3000/api/resultados/'+idInsert, function (error, response, body) {
+                                                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                                vacio = !Object.keys(parsedBody).length;
+                                                                                                                                assert.equal(vacio, true, 'Eliminado resultado '+idInsert+' OK');
+                                                                                                                            }else{
+                                                                                                                                console.log(error);
+                                                                                                                            }
+                                                                                                                            // Comienzo de POST
+                                                                                                                            request(options, function (error, response, body) {
                                                                                                                                 if (!error && response.statusCode == 200) {
                                                                                                                                     // Print out the response body
-                                                                                                                                    assert.equal(response.statusCode, 200, 'PUT resultados OK');
-                                                                                                                                    //GET ligas de liga modificada
-                                                                                                                                    request('http://localhost:3000/api/resultados/'+idInsert, function (error, response, body) {
-                                                                                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                    assert.equal(response.statusCode, 200, 'POST resultados OK');
+                                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                                    idInsert = parsedBody.insertId;
+                                                                                                                                    //PUT
+                                                                                                                                    // Configure the request
+                                                                                                                                    var optionsPut = {
+                                                                                                                                        url: 'http://localhost:3000/api/resultados/'+idInsert,
+                                                                                                                                        method: 'PUT',
+                                                                                                                                        headers: headers,
+                                                                                                                                        form: { 'fkIdPartido': 5, 'puntosEquipo1Set1' : 3, 'puntosEquipo1Set2': 6, 'puntosEquipo1Set3': 6,
+                                                                                                                                            'puntosEquipo2Set1': 6, 'puntosEquipo2Set2':4, 'puntosEquipo2Set3': 7}
+                                                                                                                                    };
+                                                                                                                                    // Start the request
+                                                                                                                                    request(optionsPut, function (error, response, body) {
                                                                                                                                         if (!error && response.statusCode == 200) {
-                                                                                                                                            parsedBody = JSON.parse(body);
-                                                                                                                                            vacio = !Object.keys(parsedBody).length;
-                                                                                                                                            assert.equal(vacio, false, 'Modificado resultado '+idInsert+' OK');
-                                                                                                                                        }else{
-                                                                                                                                            console.log(error);
+                                                                                                                                            // Print out the response body
+                                                                                                                                            assert.equal(response.statusCode, 200, 'PUT resultados OK');
+                                                                                                                                            //GET ligas de liga modificada
+                                                                                                                                            request('http://localhost:3000/api/resultados/'+idInsert, function (error, response, body) {
+                                                                                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                                                    vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                    assert.equal(vacio, false, 'Modificado resultado '+idInsert+' OK');
+                                                                                                                                                    // Configure the request para tests de jugadores
+                                                                                                                                                    var options = {
+                                                                                                                                                        url: 'http://localhost:3000/api/jugadores',
+                                                                                                                                                        method: 'POST',
+                                                                                                                                                        headers: headers,
+                                                                                                                                                        form: { 'nombre': 'Jose García', 'contrasena' : 'aitor', 'correo': 'prueba@hotmail.com', 'nivel': null}
+                                                                                                                                                    };
+                                                                                                                                                    // Comienzo de POST
+                                                                                                                                                    request(options, function (error, response, body) {
+                                                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                                                            // Print out the response body
+                                                                                                                                                            assert.equal(response.statusCode, 200, 'POST jugadores OK');
+                                                                                                                                                            parsedBody = JSON.parse(body);
+                                                                                                                                                            idInsert = parsedBody.insertId;
+                                                                                                                                                            //DELETE
+                                                                                                                                                            // Configure the request
+                                                                                                                                                            var optionsDelete = {
+                                                                                                                                                                url: 'http://localhost:3000/api/jugadores/'+idInsert,
+                                                                                                                                                                method: 'DELETE'
+                                                                                                                                                            };
+                                                                                                                                                            // Start the request
+                                                                                                                                                            request(optionsDelete, function (error, response, body) {
+                                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                                    // Print out the response body
+                                                                                                                                                                    assert.equal(response.statusCode, 200, 'DELETE jugadores OK');
+                                                                                                                                                                    //GET jugadores de jugadores borrada
+                                                                                                                                                                    request('http://localhost:3000/api/resultados/'+idInsert, function (error, response, body) {
+                                                                                                                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                                                                            parsedBody = JSON.parse(body);
+                                                                                                                                                                            vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                            assert.equal(vacio, true, 'Eliminado jugadores '+idInsert+' OK');
+                                                                                                                                                                        }else{
+                                                                                                                                                                            console.log(error);
+                                                                                                                                                                        }
+                                                                                                                                                                        // Comienzo de POST
+                                                                                                                                                                        request(options, function (error, response, body) {
+                                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                                // Print out the response body
+                                                                                                                                                                                assert.equal(response.statusCode, 200, 'POST jugadores OK');
+                                                                                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                                                                                idInsert = parsedBody.insertId;
+                                                                                                                                                                                //PUT
+                                                                                                                                                                                // Configure the request
+                                                                                                                                                                                var optionsPut = {
+                                                                                                                                                                                    url: 'http://localhost:3000/api/jugadores/'+idInsert,
+                                                                                                                                                                                    method: 'PUT',
+                                                                                                                                                                                    headers: headers,
+                                                                                                                                                                                    form: { 'nombre': 'Jose García PUT', 'contrasena' : 'aitor', 'correo': 'prueba@hotmail.com', 'nivel': null}
+                                                                                                                                                                                };
+                                                                                                                                                                                // Start the request
+                                                                                                                                                                                request(optionsPut, function (error, response, body) {
+                                                                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                                                                        // Print out the response body
+                                                                                                                                                                                        assert.equal(response.statusCode, 200, 'PUT resultados OK');
+                                                                                                                                                                                        //GET jugadores de jugadores modificada
+                                                                                                                                                                                        request('http://localhost:3000/api/jugadores/'+idInsert, function (error, response, body) {
+                                                                                                                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                                                                                                vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                                assert.equal(vacio, false, 'Modificado jugadores '+idInsert+' OK');
+                                                                                                                                                                                                //PUT
+                                                                                                                                                                                                // Configure the request
+                                                                                                                                                                                                var optionsPut = {
+                                                                                                                                                                                                    url: 'http://localhost:3000/api/nivel/'+idInsert,
+                                                                                                                                                                                                    method: 'PUT',
+                                                                                                                                                                                                    headers: headers,
+                                                                                                                                                                                                    form: { 'nivel': 6}
+                                                                                                                                                                                                };
+                                                                                                                                                                                                request(optionsPut, function (error, response, body) {
+                                                                                                                                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                        parsedBody = JSON.parse(body);
+                                                                                                                                                                                                        vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                                        assert.equal(vacio, false, 'Modficar nivel jugadores '+idInsert+' OK');
+                                                                                                                                                                                                        request('http://localhost:3000/api/registro/prueba@hotmail.com', function (error, response, body) {
+                                                                                                                                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                                                                                                                vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                                                assert.equal(vacio, false, 'Registro  jugadores '+idInsert+' OK');
+                                                                                                                                                                                                                //GET jugadores
+                                                                                                                                                                                                                request('http://localhost:3000/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                        assert.equal(response.statusCode, 200, 'GET jugadores OK');
+                                                                                                                                                                                                                        //GET partidos
+                                                                                                                                                                                                                        request('http://localhost:3000/api/partidos', function (error, response, body) {
+                                                                                                                                                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                                assert.equal(response.statusCode, 200, 'GET partidos OK');
+                                                                                                                                                                                                                                //GET resultados
+                                                                                                                                                                                                                                request('http://localhost:3000/api/resultados', function (error, response, body) {
+                                                                                                                                                                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                                        assert.equal(response.statusCode, 200, 'GET resultados OK');
+                                                                                                                                                                                                                                        //GET ligas
+                                                                                                                                                                                                                                        request('http://localhost:3000/api/ligas', function (error, response, body) {
+                                                                                                                                                                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                                                assert.equal(response.statusCode, 200, 'GET ligas OK');
+                                                                                                                                                                                                                                            }else{
+                                                                                                                                                                                                                                                console.log(error);
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                    }else{
+                                                                                                                                                                                                                                        console.log(error);
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                            }else{
+                                                                                                                                                                                                                                console.log(error);
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                    }else{
+                                                                                                                                                                                                                        console.log(error);
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                });
+                                                                                                                                                                                                            }else{
+                                                                                                                                                                                                                console.log(error);
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                        });
+                                                                                                                                                                                                    }else{
+                                                                                                                                                                                                        console.log(error);
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                });
+                                                                                                                                                                                            }else{
+                                                                                                                                                                                                console.log(error);
+                                                                                                                                                                                            }
+                                                                                                                                                                                        });
+                                                                                                                                                                                    }
+                                                                                                                                                                                });
+
+                                                                                                                                                                            }
+                                                                                                                                                                        });
+                                                                                                                                                                    });
+                                                                                                                                                                }
+                                                                                                                                                            });
+
+                                                                                                                                                        }
+                                                                                                                                                    });
+                                                                                                                                                }else{
+                                                                                                                                                    console.log(error);
+                                                                                                                                                }
+                                                                                                                                            });
                                                                                                                                         }
                                                                                                                                     });
+
                                                                                                                                 }
                                                                                                                             });
-
-                                                                                                                        }
-                                                                                                                    });
+                                                                                                                        });
+                                                                                                                    }
                                                                                                                 });
+
                                                                                                             }
                                                                                                         });
-
+                                                                                                    }else{
+                                                                                                        console.log(error);
                                                                                                     }
                                                                                                 });
-                                                                                            }else{
-                                                                                                console.log(error);
                                                                                             }
                                                                                         });
+
                                                                                     }
                                                                                 });
-
-                                                                            }
-                                                                        });
+                                                                            });
+                                                                        }
                                                                     });
+
                                                                 }
                                                             });
-
+                                                        }else{
+                                                            console.log(error);
                                                         }
                                                     });
                                                 }else{
@@ -306,157 +427,410 @@ if(env === '/usr/local'){
 }else{
     exports['test'] = function(assert, done) {
         var request = require('request');
-        //GET jugadores
-        //request('http://localhost:3000/api/jugadores', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET jugadores OK');
-            } else {
-                console.log(error);
-            }
-        });
-        //GET partidos
-        //request('http://localhost:3000/api/partidos', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/partidos', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET partidos OK');
-            } else {
-                console.log(error);
-            }
-        });
-        //GET resultados
-        //request('http://localhost:3000/api/resultados', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/resultados', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET resultados OK');
-            } else {
-                console.log(error);
-            }
-        });
-        //GET ligas
-        //request('http://localhost:3000/api/ligas', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/ligas', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET ligas OK');
-            } else {
-                console.log(error);
-            }
-        });
-
-        //GET jugadores
-        //request('http://localhost:3000/api/jugadores/1', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores/1', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET jugadores/1 OK');
-            } else {
-                console.log(error);
-            }
-        });
-        //GET partidos
-        //request('http://localhost:3000/api/partidos/1', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/partidos/1', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET partidos/1 OK');
-            } else {
-                console.log(error);
-            }
-        });
-        //GET resultados
-        //request('http://localhost:3000/api/resultados/1', function (error, response, body) {
-        request('https://quiet-lowlands-92391.herokuapp.com/api/resultados/1', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                assert.equal(response.statusCode, 200, 'GET resultados/1 OK');
-            } else {
-                console.log(error);
-            }
-        });
 
         // Set the headers
         var headers = {
-            'User-Agent': 'Super Agent/0.0.1',
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'User-Agent':       'Super Agent/0.0.1',
+            'Content-Type':     'application/x-www-form-urlencoded'
         };
 
-        // Configure the request
+        // Configurar petición para tests de resultados
         var options = {
-            url: 'https://quiet-lowlands-92391.herokuapp.com/api/ligas',
+            url: 'https://quiet-lowlands-92391.herokuapp.com/api/partidos',
             method: 'POST',
             headers: headers,
-            form: {'nombre': 'ligaPost', 'numJugadores': 16}
+            form: { 'fkIdJugador1': 2, 'fkIdJugador2' : 3, 'fkIdJugador3': 4, 'fkIdJugador4': 5,
+                'lugar': 'Plaza Imperial', 'hora':'08:08:08', 'fecha': '2017-01-01', 'nivel': 6}
         };
         // Comienzo de POST
 
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 // Print out the response body
-                assert.equal(response.statusCode, 200, 'POST ligas OK');
+                assert.equal(response.statusCode, 200, 'POST partidos OK');
                 parsedBody = JSON.parse(body);
                 idInsert = parsedBody.insertId;
                 //DELETE
                 // Configure the request
                 var optionsDelete = {
-                    url: 'https://quiet-lowlands-92391.herokuapp.com/api/ligas/' + idInsert,
+                    url: 'https://quiet-lowlands-92391.herokuapp.com/api/partidos/'+idInsert,
                     method: 'DELETE'
                 };
                 // Start the request
                 request(optionsDelete, function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         // Print out the response body
-                        assert.equal(response.statusCode, 200, 'DELETE ligas OK');
+                        assert.equal(response.statusCode, 200, 'DELETE partidos OK');
                         //GET ligas de liga borrada
-                        request('https://quiet-lowlands-92391.herokuapp.com/api/ligas/' + idInsert, function (error, response, body) {
-                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                parsedBody = JSON.parse(body);
-                                vacio = !Object.keys(parsedBody).length;
-                                assert.equal(vacio, true, 'Eliminado ' + idInsert + ' OK');
-                            } else {
-                                console.log(error);
-                            }
-                            // Comienzo de POST
-                            request(options, function (error, response, body) {
+                        //request('http://localhost:3000/api/partidos/'+idInsert, function (error, response, body) {
+                        request('https://quiet-lowlands-92391.herokuapp.com/api/partidos/'+idInsert, function (error, response, body) {
                                 if (!error && response.statusCode == 200) {
-                                    // Print out the response body
-                                    assert.equal(response.statusCode, 200, 'POST ligas OK');
                                     parsedBody = JSON.parse(body);
-                                    idInsert = parsedBody.insertId;
-                                    //PUT
-                                    // Configure the request
-                                    var optionsPut = {
-                                        url: 'https://quiet-lowlands-92391.herokuapp.com/api/ligas/' + idInsert,
-                                        method: 'PUT',
-                                        headers: headers,
-                                        form: {'nombre': 'ligaPut', 'numJugadores': 16}
-                                    };
-                                    // Start the request
-                                    request(optionsPut, function (error, response, body) {
-                                        if (!error && response.statusCode == 200) {
-                                            // Print out the response body
-                                            assert.equal(response.statusCode, 200, 'PUT ligas OK');
-                                            //GET ligas de liga borrada
-                                            request('https://quiet-lowlands-92391.herokuapp.com/api/ligas/' + idInsert, function (error, response, body) {
-                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
-                                                if (!error && response.statusCode == 200) {
-                                                    parsedBody = JSON.parse(body);
-                                                    vacio = !Object.keys(parsedBody).length;
-                                                    assert.equal(vacio, false, 'Modificado ' + idInsert + ' OK');
-                                                } else {
-                                                    console.log(error);
-                                                }
-                                            });
-                                        }
-                                    });
-
+                                    vacio = !Object.keys(parsedBody).length;
+                                    assert.equal(vacio, true, 'Eliminado '+idInsert+' OK');
+                                }else{
+                                    console.log(error);
                                 }
+                                // Comienzo de POST
+                                request(options, function (error, response, body) {
+                                    if (!error && response.statusCode == 200) {
+                                        // Print out the response body
+                                        assert.equal(response.statusCode, 200, 'POST partidos OK');
+                                        parsedBody = JSON.parse(body);
+                                        idInsert = parsedBody.insertId;
+                                        //PUT
+                                        // Configure the request
+                                        var optionsPut = {
+                                            url: 'https://quiet-lowlands-92391.herokuapp.com/partidos/'+idInsert,
+                                            method: 'PUT',
+                                            headers: headers,
+                                            form: { 'fkIdJugador1': 2, 'fkIdJugador2' : 3, 'fkIdJugador3': 4, 'fkIdJugador4': 5,
+                                                'lugar': 'Plaza Imperial 2', 'hora':'08:08:08', 'fecha': '2017-01-01', 'nivel': 6}
+                                        };
+                                        // Start the request
+                                        request(optionsPut, function (error, response, body) {
+                                            if (!error && response.statusCode == 200) {
+                                                // Print out the response body
+                                                assert.equal(response.statusCode, 200, 'PUT partidos OK');
+                                                //GET ligas de liga borrada
+                                                request('https://quiet-lowlands-92391.herokuapp.com/api/partidos/'+idInsert, function (error, response, body) {
+                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                    if (!error && response.statusCode == 200) {
+                                                        parsedBody = JSON.parse(body);
+                                                        vacio = !Object.keys(parsedBody).length;
+                                                        assert.equal(vacio, false, 'Modificado partidos '+idInsert+' OK');
+                                                        //PUT
+                                                        // Configure the request
+                                                        var optionsPut = {
+                                                            url: 'https://quiet-lowlands-92391.herokuapp.com/api/partido/'+idInsert,
+                                                            method: 'PUT',
+                                                            headers: headers,
+                                                            form: { 'fkIdJugador1': 8}
+                                                        };
+                                                        // Start the request
+                                                        request(optionsPut, function (error, response, body) {
+                                                            if (!error && response.statusCode == 200) {
+                                                                // Print out the response body
+                                                                assert.equal(response.statusCode, 200, 'PUT partido OK');
+                                                                // Configure the request para tests de ligas
+                                                                var options = {
+                                                                    url: 'https://quiet-lowlands-92391.herokuapp.com/api/ligas',
+                                                                    method: 'POST',
+                                                                    headers: headers,
+                                                                    form: { 'nombre': 'ligaPost', 'numJugadores' : 16}
+                                                                };
+                                                                // Comienzo de POST
+                                                                request(options, function (error, response, body) {
+                                                                    if (!error && response.statusCode == 200) {
+                                                                        // Print out the response body
+                                                                        assert.equal(response.statusCode, 200, 'POST ligas OK');
+                                                                        parsedBody = JSON.parse(body);
+                                                                        idInsert = parsedBody.insertId;
+                                                                        //DELETE
+                                                                        // Configure the request
+                                                                        var optionsDelete = {
+                                                                            url: 'https://quiet-lowlands-92391.herokuapp.com/api/ligas/'+idInsert,
+                                                                            method: 'DELETE'
+                                                                        };
+                                                                        // Start the request
+                                                                        request(optionsDelete, function (error, response, body) {
+                                                                            if (!error && response.statusCode == 200) {
+                                                                                // Print out the response body
+                                                                                assert.equal(response.statusCode, 200, 'DELETE ligas OK');
+                                                                                //GET ligas de liga borrada
+                                                                                request('https://quiet-lowlands-92391.herokuapp.com/api/ligas/'+idInsert, function (error, response, body) {
+                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                    if (!error && response.statusCode == 200) {
+                                                                                        parsedBody = JSON.parse(body);
+                                                                                        vacio = !Object.keys(parsedBody).length;
+                                                                                        assert.equal(vacio, true, 'Eliminado '+idInsert+' OK');
+                                                                                    }else{
+                                                                                        console.log(error);
+                                                                                    }
+                                                                                    // Comienzo de POST
+                                                                                    request(options, function (error, response, body) {
+                                                                                        if (!error && response.statusCode == 200) {
+                                                                                            // Print out the response body
+                                                                                            assert.equal(response.statusCode, 200, 'POST ligas OK');
+                                                                                            parsedBody = JSON.parse(body);
+                                                                                            idInsert = parsedBody.insertId;
+                                                                                            //PUT
+                                                                                            // Configure the request
+                                                                                            var optionsPut = {
+                                                                                                url: 'https://quiet-lowlands-92391.herokuapp.com/api/ligas/'+idInsert,
+                                                                                                method: 'PUT',
+                                                                                                headers: headers,
+                                                                                                form: { 'nombre': 'ligaPut', 'numJugadores' : 16}
+                                                                                            };
+                                                                                            // Start the request
+                                                                                            request(optionsPut, function (error, response, body) {
+                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                    // Print out the response body
+                                                                                                    assert.equal(response.statusCode, 200, 'PUT ligas OK');
+                                                                                                    //GET ligas de liga modificada
+                                                                                                    request('https://quiet-lowlands-92391.herokuapp.com/api/ligas/'+idInsert, function (error, response, body) {
+                                                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                            parsedBody = JSON.parse(body);
+                                                                                                            vacio = !Object.keys(parsedBody).length;
+                                                                                                            assert.equal(vacio, false, 'Modificado ligas '+idInsert+' OK');
+                                                                                                            // Configure the request para tests de resultados
+                                                                                                            var options = {
+                                                                                                                url: 'https://quiet-lowlands-92391.herokuapp.com/api/resultados',
+                                                                                                                method: 'POST',
+                                                                                                                headers: headers,
+                                                                                                                form: { 'fkIdPartido': 5, 'puntosEquipo1Set1' : 3, 'puntosEquipo1Set2': 6, 'puntosEquipo1Set3': 4,
+                                                                                                                    'puntosEquipo2Set1': 6, 'puntosEquipo2Set2':4, 'puntosEquipo2Set3': 6}
+                                                                                                            };
+                                                                                                            // Comienzo de POST
+                                                                                                            request(options, function (error, response, body) {
+                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                    // Print out the response body
+                                                                                                                    assert.equal(response.statusCode, 200, 'POST resultados OK');
+                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                    idInsert = parsedBody.insertId;
+                                                                                                                    //DELETE
+                                                                                                                    // Configure the request
+                                                                                                                    var optionsDelete = {
+                                                                                                                        url: 'https://quiet-lowlands-92391.herokuapp.com/api/resultados/'+idInsert,
+                                                                                                                        method: 'DELETE'
+                                                                                                                    };
+                                                                                                                    // Start the request
+                                                                                                                    request(optionsDelete, function (error, response, body) {
+                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                            // Print out the response body
+                                                                                                                            assert.equal(response.statusCode, 200, 'DELETE resultados OK');
+                                                                                                                            //GET ligas de liga borrada
+                                                                                                                            request('https://quiet-lowlands-92391.herokuapp.com/api/resultados/'+idInsert, function (error, response, body) {
+                                                                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                                    vacio = !Object.keys(parsedBody).length;
+                                                                                                                                    assert.equal(vacio, true, 'Eliminado resultado '+idInsert+' OK');
+                                                                                                                                }else{
+                                                                                                                                    console.log(error);
+                                                                                                                                }
+                                                                                                                                // Comienzo de POST
+                                                                                                                                request(options, function (error, response, body) {
+                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                        // Print out the response body
+                                                                                                                                        assert.equal(response.statusCode, 200, 'POST resultados OK');
+                                                                                                                                        parsedBody = JSON.parse(body);
+                                                                                                                                        idInsert = parsedBody.insertId;
+                                                                                                                                        //PUT
+                                                                                                                                        // Configure the request
+                                                                                                                                        var optionsPut = {
+                                                                                                                                            url: 'https://quiet-lowlands-92391.herokuapp.com/api/resultados/'+idInsert,
+                                                                                                                                            method: 'PUT',
+                                                                                                                                            headers: headers,
+                                                                                                                                            form: { 'fkIdPartido': 5, 'puntosEquipo1Set1' : 3, 'puntosEquipo1Set2': 6, 'puntosEquipo1Set3': 6,
+                                                                                                                                                'puntosEquipo2Set1': 6, 'puntosEquipo2Set2':4, 'puntosEquipo2Set3': 7}
+                                                                                                                                        };
+                                                                                                                                        // Start the request
+                                                                                                                                        request(optionsPut, function (error, response, body) {
+                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                // Print out the response body
+                                                                                                                                                assert.equal(response.statusCode, 200, 'PUT resultados OK');
+                                                                                                                                                //GET ligas de liga modificada
+                                                                                                                                                request('https://quiet-lowlands-92391.herokuapp.com/resultados/'+idInsert, function (error, response, body) {
+                                                                                                                                                    //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                                        parsedBody = JSON.parse(body);
+                                                                                                                                                        vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                        assert.equal(vacio, false, 'Modificado resultado '+idInsert+' OK');
+                                                                                                                                                        // Configure the request para tests de jugadores
+                                                                                                                                                        var options = {
+                                                                                                                                                            url: 'https://quiet-lowlands-92391.herokuapp.com/api/jugadores',
+                                                                                                                                                            method: 'POST',
+                                                                                                                                                            headers: headers,
+                                                                                                                                                            form: { 'nombre': 'Jose García', 'contrasena' : 'aitor', 'correo': 'prueba@hotmail.com', 'nivel': null}
+                                                                                                                                                        };
+                                                                                                                                                        // Comienzo de POST
+                                                                                                                                                        request(options, function (error, response, body) {
+                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                // Print out the response body
+                                                                                                                                                                assert.equal(response.statusCode, 200, 'POST jugadores OK');
+                                                                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                                                                idInsert = parsedBody.insertId;
+                                                                                                                                                                //DELETE
+                                                                                                                                                                // Configure the request
+                                                                                                                                                                var optionsDelete = {
+                                                                                                                                                                    url: 'https://quiet-lowlands-92391.herokuapp.com/api/jugadores/'+idInsert,
+                                                                                                                                                                    method: 'DELETE'
+                                                                                                                                                                };
+                                                                                                                                                                // Start the request
+                                                                                                                                                                request(optionsDelete, function (error, response, body) {
+                                                                                                                                                                    if (!error && response.statusCode == 200) {
+                                                                                                                                                                        // Print out the response body
+                                                                                                                                                                        assert.equal(response.statusCode, 200, 'DELETE jugadores OK');
+                                                                                                                                                                        //GET jugadores de jugadores borrada
+                                                                                                                                                                        request('https://quiet-lowlands-92391.herokuapp.com/api/resultados/'+idInsert, function (error, response, body) {
+                                                                                                                                                                            //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                            if (!error && response.statusCode == 200) {
+                                                                                                                                                                                parsedBody = JSON.parse(body);
+                                                                                                                                                                                vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                assert.equal(vacio, true, 'Eliminado jugadores '+idInsert+' OK');
+                                                                                                                                                                            }else{
+                                                                                                                                                                                console.log(error);
+                                                                                                                                                                            }
+                                                                                                                                                                            // Comienzo de POST
+                                                                                                                                                                            request(options, function (error, response, body) {
+                                                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                                                    // Print out the response body
+                                                                                                                                                                                    assert.equal(response.statusCode, 200, 'POST jugadores OK');
+                                                                                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                                                                                    idInsert = parsedBody.insertId;
+                                                                                                                                                                                    //PUT
+                                                                                                                                                                                    // Configure the request
+                                                                                                                                                                                    var optionsPut = {
+                                                                                                                                                                                        url: 'https://quiet-lowlands-92391.herokuapp.com/api/jugadores/'+idInsert,
+                                                                                                                                                                                        method: 'PUT',
+                                                                                                                                                                                        headers: headers,
+                                                                                                                                                                                        form: { 'nombre': 'Jose García PUT', 'contrasena' : 'aitor', 'correo': 'prueba@hotmail.com', 'nivel': null}
+                                                                                                                                                                                    };
+                                                                                                                                                                                    // Start the request
+                                                                                                                                                                                    request(optionsPut, function (error, response, body) {
+                                                                                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                                                                                            // Print out the response body
+                                                                                                                                                                                            assert.equal(response.statusCode, 200, 'PUT resultados OK');
+                                                                                                                                                                                            //GET jugadores de jugadores modificada
+                                                                                                                                                                                            request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores/'+idInsert, function (error, response, body) {
+                                                                                                                                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                                                                                                    vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                                    assert.equal(vacio, false, 'Modificado jugadores '+idInsert+' OK');
+                                                                                                                                                                                                    //PUT
+                                                                                                                                                                                                    // Configure the request
+                                                                                                                                                                                                    var optionsPut = {
+                                                                                                                                                                                                        url: 'https://quiet-lowlands-92391.herokuapp.com/api/nivel/'+idInsert,
+                                                                                                                                                                                                        method: 'PUT',
+                                                                                                                                                                                                        headers: headers,
+                                                                                                                                                                                                        form: { 'nivel': 6}
+                                                                                                                                                                                                    };
+                                                                                                                                                                                                    request(optionsPut, function (error, response, body) {
+                                                                                                                                                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                            parsedBody = JSON.parse(body);
+                                                                                                                                                                                                            vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                                            assert.equal(vacio, false, 'Modficar nivel jugadores '+idInsert+' OK');
+                                                                                                                                                                                                            request('https://quiet-lowlands-92391.herokuapp.com/api/registro/prueba@hotmail.com', function (error, response, body) {
+                                                                                                                                                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                    parsedBody = JSON.parse(body);
+                                                                                                                                                                                                                    vacio = !Object.keys(parsedBody).length;
+                                                                                                                                                                                                                    assert.equal(vacio, false, 'Registro  jugadores '+idInsert+' OK');
+                                                                                                                                                                                                                    //GET jugadores
+                                                                                                                                                                                                                    request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                            assert.equal(response.statusCode, 200, 'GET jugadores OK');
+                                                                                                                                                                                                                            //GET partidos
+                                                                                                                                                                                                                            request('https://quiet-lowlands-92391.herokuapp.com/api/partidos', function (error, response, body) {
+                                                                                                                                                                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                                    assert.equal(response.statusCode, 200, 'GET partidos OK');
+                                                                                                                                                                                                                                    //GET resultados
+                                                                                                                                                                                                                                    request('https://quiet-lowlands-92391.herokuapp.com/api/resultados', function (error, response, body) {
+                                                                                                                                                                                                                                        //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                                        if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                                            assert.equal(response.statusCode, 200, 'GET resultados OK');
+                                                                                                                                                                                                                                            //GET ligas
+                                                                                                                                                                                                                                            request('https://quiet-lowlands-92391.herokuapp.com/api/ligas', function (error, response, body) {
+                                                                                                                                                                                                                                                //request('https://quiet-lowlands-92391.herokuapp.com/api/jugadores', function (error, response, body) {
+                                                                                                                                                                                                                                                if (!error && response.statusCode == 200) {
+                                                                                                                                                                                                                                                    assert.equal(response.statusCode, 200, 'GET ligas OK');
+                                                                                                                                                                                                                                                }else{
+                                                                                                                                                                                                                                                    console.log(error);
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                                        }else{
+                                                                                                                                                                                                                                            console.log(error);
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                                }else{
+                                                                                                                                                                                                                                    console.log(error);
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                        }else{
+                                                                                                                                                                                                                            console.log(error);
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                }else{
+                                                                                                                                                                                                                    console.log(error);
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                            });
+                                                                                                                                                                                                        }else{
+                                                                                                                                                                                                            console.log(error);
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                    });
+                                                                                                                                                                                                }else{
+                                                                                                                                                                                                    console.log(error);
+                                                                                                                                                                                                }
+                                                                                                                                                                                            });
+                                                                                                                                                                                        }
+                                                                                                                                                                                    });
+
+                                                                                                                                                                                }
+                                                                                                                                                                            });
+                                                                                                                                                                        });
+                                                                                                                                                                    }
+                                                                                                                                                                });
+
+                                                                                                                                                            }
+                                                                                                                                                        });
+                                                                                                                                                    }else{
+                                                                                                                                                        console.log(error);
+                                                                                                                                                    }
+                                                                                                                                                });
+                                                                                                                                            }
+                                                                                                                                        });
+
+                                                                                                                                    }
+                                                                                                                                });
+                                                                                                                            });
+                                                                                                                        }
+                                                                                                                    });
+
+                                                                                                                }
+                                                                                                            });
+                                                                                                        }else{
+                                                                                                            console.log(error);
+                                                                                                        }
+                                                                                                    });
+                                                                                                }
+                                                                                            });
+
+                                                                                        }
+                                                                                    });
+                                                                                });
+                                                                            }
+                                                                        });
+
+                                                                    }
+                                                                });
+                                                            }else{
+                                                                console.log(error);
+                                                            }
+                                                        });
+                                                    }else{
+                                                        console.log(error);
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                    }
+                                });
                             });
+                        }
                         });
                     }
                 });
 
-            }
-        });
-    };
+        };
 }
+
 
 
 if (module === require.main) require('test').run(exports);
