@@ -265,7 +265,6 @@ exports['test'] = function(assert, done) {
                                                                                                                                                                     if (!error && response.statusCode == 200) {
                                                                                                                                                                         parsedBody = JSON.parse(body);
                                                                                                                                                                         vacio = !Object.keys(parsedBody).length;
-                                                                                                                                                                        console.log(body, idInsert, vacio);
                                                                                                                                                                         assert.equal(vacio, true, 'Eliminado jugadores '+idInsert+' OK');
                                                                                                                                                                     }else{
                                                                                                                                                                         console.log(error);
