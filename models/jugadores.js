@@ -108,7 +108,7 @@ userModel.updateJugador = function(jugadorData, callback)
             'contrasena = ' + connection.escape(jugadorData.contrasena) +',' +
             'correo = ' + connection.escape(jugadorData.correo) +',' +
             'nivel = ' + connection.escape(jugadorData.nivel) +
-            'WHERE id = ' + jugadorData.id;
+            ' WHERE id = ' + jugadorData.id;
 
         connection.query(sql, function(error, result)
         {
@@ -161,7 +161,7 @@ userModel.addLevel = function(jugadorData, callback)
     if(connection)
     {
         var sql = 'UPDATE jugadores SET nivel = ' + connection.escape(jugadorData.nivel) +
-            'WHERE id = ' + jugadorData.id;
+            ' WHERE id = ' + jugadorData.id;
 
         connection.query(sql, function(error, result)
         {
@@ -200,7 +200,7 @@ userModel.addPlayer = function(jugadorData,callback)
     if(connection)
     {
         var sql = 'UPDATE jugadores SET fkIdLiga = ' + connection.escape(jugadorData.fkIdLiga) +
-            'WHERE id = ' + jugadorData.id;
+            ' WHERE id = ' + jugadorData.id;
 
         connection.query(sql, function(error, result)
         {

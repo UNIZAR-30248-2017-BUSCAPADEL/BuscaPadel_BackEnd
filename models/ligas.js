@@ -106,7 +106,7 @@ ligaModel.updateLiga = function(ligaData, callback)
     {
         var sql = 'UPDATE ligas SET nombre = ' + connection.escape(ligaData.nombre) + ',' +
             'numJugadores = ' + connection.escape(ligaData.numJugadores) +
-            'WHERE id = ' + ligaData.id;
+            ' WHERE id = ' + ligaData.id;
 
         connection.query(sql, function(error, result)
         {

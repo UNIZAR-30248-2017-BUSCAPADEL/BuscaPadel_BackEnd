@@ -113,7 +113,6 @@ resultModel.updateResultado = function(resultData, callback)
             'puntosEquipo2Set2 = ' + connection.escape(resultData.puntosEquipo2Set2) +',' +
             'puntosEquipo2Set3 = ' + connection.escape(resultData.puntosEquipo2Set3) +
             ' WHERE id = ' + resultData.id;
-        console.log(sql);
         connection.query(sql, function(error, result)
         {
             if(error)

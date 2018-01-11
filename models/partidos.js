@@ -109,7 +109,7 @@ partidosModel.updatePartido = function(partidoData, callback)
             'fkIdJugador4 = ' + connection.escape(partidoData.fkIdJugador4)  + ',' + 'lugar = ' + connection.escape(partidoData.lugar) + ',' +
             'hora = ' + connection.escape(partidoData.hora)  + ',' + 'fecha = ' + connection.escape(partidoData.fecha) + ',' +
             'nivel = ' + connection.escape(partidoData.nivel)  +
-            'WHERE id = ' + partidoData.id
+            ' WHERE id = ' + partidoData.id
 
         connection.query(sql, function(error, result)
         {
